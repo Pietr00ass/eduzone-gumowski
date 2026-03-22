@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz lokalny</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./src/app.js"></script>
+  </head>
+  <body>
+    <main class="page">
+      <section class="app-shell">
+        <aside class="sidebar surface-block">
+          <div>
+            <p class="eyebrow">Quiz workspace</p>
+            <h1 class="sidebar__brand">edu<span>zone</span></h1>
+          </div>
+
+          <nav class="sidebar__nav" aria-label="Główna nawigacja">
+            <button type="button" class="nav-item nav-item--active" data-tab-trigger="overview">Dashboard</button>
+            <button type="button" class="nav-item" data-tab-trigger="play">Graj</button>
+            <button type="button" class="nav-item" data-tab-trigger="questions">Bank pytań</button>
+            <button type="button" class="nav-item" data-tab-trigger="leaderboard">Rekordy</button>
+            <button type="button" class="nav-item" data-tab-trigger="profile">Profil</button>
+          </nav>
+
+          <section class="login-card">
+            <div class="login-card__avatar" id="sidebar-avatar">GL</div>
+            <div>
+              <strong id="sidebar-nickname">Gracz lokalny</strong>
+              <p id="sidebar-email">local@quiz.app</p>
+            </div>
+            <button type="button" class="button button--ghost button--small" id="login-shortcut-btn">Edytuj profil</button>
+          </section>
+
+          <section class="surface-muted">
+            <p class="section-kicker">Szybki status</p>
+            <ul class="sidebar__stats">
+              <li><span>Sesje</span><strong id="sidebar-games">0</strong></li>
+              <li><span>Punkty</span><strong id="sidebar-points">0</strong></li>
+              <li><span>Skuteczność</span><strong id="sidebar-accuracy">0%</strong></li>
+            </ul>
+          </section>
+        </aside>
+
+        <section class="content-shell">
+          <header class="topbar surface-block">
+            <div>
+              <p class="section-kicker">Local-first dashboard</p>
+              <h2>Nauka, egzamin i pełny backup lokalnego quizu</h2>
+              <p class="intro">
+                Teraz panel spina w jednym miejscu spokojny tryb nauki, restrykcyjny egzamin, podgląd odpowiedzi po
+                rundzie, retry błędnych pytań oraz backup całej aplikacji bez żadnego backendu.
+              </p>
+            </div>
+
+            <div class="hero__stats topbar__stats" aria-label="Szybkie statystyki">
+              <article class="stat-card">
+                <span class="stat-card__label">Źródło</span>
+                <strong id="stat-source">Local-only</strong>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__label">Pytania</span>
+                <strong id="stat-count">0 pytań</strong>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__label">Tryb</span>
+                <strong id="stat-mode">Nauka</strong>
+              </article>
+              <article class="stat-card">
+                <span class="stat-card__label">Średnia skuteczność</span>
+                <strong id="stat-best">Brak danych</strong>
+              </article>
+            </div>
+          </header>
+
+          <div id="status" aria-live="polite"></div>
+
+          <div class="tab-strip" aria-label="Szybkie zakładki">
+            <button type="button" class="tab-pill tab-pill--active" data-tab-trigger="overview">Start</button>
+            <button type="button" class="tab-pill" data-tab-trigger="play">Sesja</button>
+            <button type="button" class="tab-pill" data-tab-trigger="questions">Pytania</button>
+            <button type="button" class="tab-pill" data-tab-trigger="leaderboard">Ranking</button>
+            <button type="button" class="tab-pill" data-tab-trigger="profile">Konto</button>
+          </div>
+
+          <section class="tab-panel tab-panel--active" data-tab-panel="overview">
+            <div class="dashboard-grid dashboard-grid--overview">
+              <article class="surface-block hero-card">
+                <p class="section-kicker">Centrum dowodzenia</p>
+                <h3>Wszystko w jednym miejscu</h3>
+                <p class="intro">
+                  Masz tu od ręki profil, rekomendację następnej sesji, przegląd najtrudniejszych pytań, tryb egzaminu
+                  i pełne zarządzanie lokalnym backupem.
+                </p>
+                <div class="hero__actions hero__actions--primary">
+                  <button type="button" class="button" id="start-quiz-btn">Start sesji</button>
+                  <button type="button" class="button button--ghost" id="weak-spots-btn">Trenuj słabe miejsca</button>
+                </div>
+                <p id="weak-spots-status" class="config-note"></p>
+                <div class="hero__utility">
+                  <button type="button" class="button button--ghost button--small" id="seed-demo-btn">Załaduj demo</button>
+                  <p class="hero__utility-note">Demo od razu pokaże readiness, trend i najczęstsze błędy.</p>
+                </div>
+              </article>
+
+              <article class="surface-block">
+                <p class="section-kicker">Profil</p>
+                <h3>Podsumowanie użytkownika</h3>
+                <section id="user-summary" class="summary"></section>
+              </article>
+            </div>
+
+            <div class="dashboard-grid dashboard-grid--bottom">
+              <article class="surface-block">
+                <div class="surface-block__header">
+                  <div>
+                    <p class="section-kicker">Insighty</p>
+                    <h3>Realny obraz postępu</h3>
+                  </div>
+                </div>
+                <section id="overview-insights" class="summary overview-insights-shell"></section>
+              </article>
+
+              <article class="surface-block">
+                <div class="surface-block__header">
+                  <div>
+                    <p class="section-kicker">Najczęstsze pomyłki</p>
+                    <h3>Pytania do szybkiej poprawki</h3>
+                  </div>
+                </div>
+                <ul id="mistake-hotspots" class="insight-list"></ul>
+              </article>
+            </div>
+
+            <div class="dashboard-grid dashboard-grid--bottom">
+              <article class="surface-block">
+                <div class="surface-block__header">
+                  <div>
+                    <p class="section-kicker">Tryby gry</p>
+                    <h3>Minigry, nauka i egzamin</h3>
+                  </div>
+                </div>
+                <section id="mode-cards" class="mode-grid"></section>
+              </article>
+
+              <article class="surface-block">
+                <div class="surface-block__header">
+                  <div>
+                    <p class="section-kicker">Wyniki</p>
+                    <h3>Ostatnie najlepsze sesje</h3>
+                  </div>
+                </div>
+                <ol id="leaderboard-preview" class="leaderboard"></ol>
+              </article>
+            </div>
+          </section>
+
+          <section class="tab-panel" data-tab-panel="play">
+            <div class="dashboard-grid">
+              <article class="surface-block">
+                <div class="surface-block__header">
+                  <div>
+                    <p class="section-kicker">Konfiguracja gry</p>
+                    <h3>Ustaw sesję</h3>
+                  </div>
+                </div>
+
+                <form class="filters stack-sm" id="config-form">
+                  <label>
+                    Tryb
+                    <select name="mode"></select>
+                  </label>
+
+                  <label>
+                    Kategoria
+                    <select name="category"></select>
+                  </label>
+
+                  <label>
+                    Limit pytań
+                    <input type="number" name="limit" min="1" max="50" />
+                  </label>
+
+                  <label>
+                    Czas na pytanie (sek.)
+                    <input type="number" name="timeLimit" min="5" max="120" />
+                  </label>
+
+                  <label class="checkbox-row">
+                    <input type="checkbox" name="timerEnabled" />
+                    Włącz timer
+                  </label>
+
+                  <label class="checkbox-row">
+                    <input type="checkbox" name="retryIncorrect" />
+                    W study pokaż retry tylko błędnych pytań
+                  </label>
+
+                  <label class="checkbox-row">
+                    <input type="checkbox" name="shuffle" />
+                    Losuj kolejność
+                  </label>
+                </form>
+
+                <div class="inline-actions inline-actions--config">
+                  <button type="button" class="button button--ghost button--small" id="recommended-config-btn">Polecane ustawienia</button>
+                </div>
+                <p id="config-note" class="config-note"></p>
+              </article>
+
+              <article class="surface-block">
+                <p class="section-kicker">Szybki wybór</p>
+                <h3>Tryby podobne do zakładek w aplikacji</h3>
+                <section id="mode-cards-play" class="mode-grid"></section>
+              </article>
+            </div>
+
+            <div id="quiz-actions" class="inline-actions inline-actions--quiz">
+              <button type="button" class="button" data-quiz-action="start">Start</button>
+              <button type="button" class="button button--ghost" data-quiz-action="restart">Restart</button>
+              <button type="button" class="button button--ghost" data-quiz-action="stop">Zatrzymaj</button>
+            </div>
+
+            <section id="quiz-panel" class="surface-block hidden" aria-live="polite"></section>
+          </section>
+
+          <section class="tab-panel" data-tab-panel="questions">
+            <div class="dashboard-grid dashboard-grid--bottom">
+              <article class="surface-block">
+                <div class="surface-block__header">
+                  <div>
+                    <p class="section-kicker">Import i backup</p>
+                    <h3>Baza pytań</h3>
+                  </div>
+                  <div class="inline-actions">
+                    <button type="button" class="button button--ghost" id="restore-defaults-btn">Przywróć domyślne</button>
+                    <button type="button" class="button button--ghost" id="export-btn">Eksport JSON</button>
+                    <button type="button" class="button button--ghost" id="export-backup-btn">Eksport backupu</button>
+                  </div>
+                </div>
+
+                <div class="stack-sm">
+                  <label>
+                    Filtr kategorii
+                    <select id="question-filter"></select>
+                  </label>
+
+                  <label>
+                    Wklej JSON z pytaniami
+                    <textarea id="questions-editor" rows="14"></textarea>
+                  </label>
+
+                  <div class="inline-actions">
+                    <button type="button" class="button" id="save-questions-btn">Zapisz pytania</button>
+                    <label class="button button--ghost button--file">
+                      Import pytań
+                      <input type="file" id="import-file-input" accept="application/json" hidden />
+                    </label>
+                    <label class="button button--ghost button--file">
+                      Import backupu
+                      <input type="file" id="backup-file-input" accept="application/json" hidden />
+                    </label>
+                  </div>
+                </div>
+              </article>
+
+              <article class="surface-block">
+                <div class="surface-block__header">
+                  <div>
+                    <p class="section-kicker">Szybkie dodawanie</p>
+                    <h3>Dodaj pytanie bez JSON-a</h3>
+                  </div>
+                </div>
+
+                <form id="quick-question-form" class="stack-sm">
+                  <label>
+                    ID pytania
+                    <input type="text" name="id" maxlength="64" placeholder="np. frontend-12 albo zostaw puste" />
+                  </label>
+
+                  <label>
+                    Kategoria
+                    <input type="text" name="category" maxlength="32" placeholder="np. frontend" />
+                  </label>
+
+                  <label>
+                    Treść pytania
+                    <textarea name="content" rows="4" placeholder="Wpisz pytanie"></textarea>
+                  </label>
+
+                  <label>
+                    Odpowiedzi, po jednej w linii
+                    <textarea name="answers" rows="6" placeholder="Pierwsza odpowiedź&#10;Druga odpowiedź&#10;Trzecia odpowiedź"></textarea>
+                  </label>
+
+                  <label>
+                    Poprawna odpowiedź
+                    <input type="text" name="correctAnswer" maxlength="120" placeholder="Musi pasować do jednej z odpowiedzi" />
+                  </label>
+
+                  <label>
+                    Wyjaśnienie
+                    <textarea name="explanation" rows="4" placeholder="Opcjonalne wyjaśnienie"></textarea>
+                  </label>
+
+                  <div class="inline-actions">
+                    <button type="submit" class="button">Dodaj pytanie</button>
+                  </div>
+                </form>
+
+                <section class="question-preview-shell">
+                  <p class="section-kicker">Podgląd przed zapisem</p>
+                  <div id="quick-question-preview" class="question-preview"></div>
+                </section>
+              </article>
+            </div>
+
+            <article class="surface-block surface-block--spaced">
+              <div class="surface-block__header">
+                <div>
+                  <p class="section-kicker">Przegląd bazy</p>
+                  <h3>Walidacja i podgląd pytań</h3>
+                </div>
+              </div>
+              <section id="question-summary" class="summary"></section>
+              <ul id="question-library" class="questions"></ul>
+            </article>
+          </section>
+
+          <section class="tab-panel" data-tab-panel="leaderboard">
+            <article class="surface-block">
+              <div class="surface-block__header">
+                <div>
+                  <p class="section-kicker">Wyniki</p>
+                  <h3>Pełna tabela rekordów</h3>
+                </div>
+                <div class="inline-actions">
+                  <button type="button" class="button button--ghost" id="export-leaderboard-btn">Eksport wyników</button>
+                  <button type="button" class="button button--ghost" id="clear-leaderboard-btn">Wyczyść rekordy</button>
+                </div>
+              </div>
+
+              <label>
+                Filtr trybu
+                <select id="leaderboard-filter"></select>
+              </label>
+
+              <ol id="leaderboard" class="leaderboard"></ol>
+            </article>
+          </section>
+
+          <section class="tab-panel" data-tab-panel="profile">
+            <div class="dashboard-grid">
+              <article class="surface-block">
+                <div class="surface-block__header">
+                  <div>
+                    <p class="section-kicker">Panel logowania</p>
+                    <h3>Użytkownik lokalny</h3>
+                  </div>
+                </div>
+
+                <form id="user-form" class="stack-sm">
+                  <label>
+                    Nick
+                    <input type="text" name="nickname" maxlength="24" placeholder="np. Ada" />
+                  </label>
+
+                  <label>
+                    Email lokalny
+                    <input type="email" name="email" placeholder="np. ada@quiz.app" />
+                  </label>
+
+                  <label>
+                    Cel tygodnia
+                    <input type="number" name="weeklyGoal" min="1" max="500" step="1" />
+                  </label>
+
+                  <label>
+                    Główny fokus
+                    <input type="text" name="focus" maxlength="32" placeholder="np. frontend" />
+                  </label>
+
+                  <div class="inline-actions">
+                    <button type="submit" class="button">Zapisz profil</button>
+                    <button type="button" class="button button--ghost" id="reset-profile-btn">Resetuj profil</button>
+                  </div>
+                </form>
+              </article>
+
+              <article class="surface-block">
+                <p class="section-kicker">Konto</p>
+                <h3>Karta użytkownika</h3>
+                <section id="profile-card" class="profile-card"></section>
+              </article>
+            </div>
+          </section>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>
