@@ -221,14 +221,11 @@ textarea {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
+    margin-bottom: 1rem;
 }
 
 .dashboard-grid--overview {
   align-items: stretch;
-}
-
-.dashboard-grid--bottom {
-  margin-top: 1rem;
 }
 
 .hero-card {
@@ -302,6 +299,7 @@ input,
 select,
 textarea,
 .button {
+    cursor: pointer;
   width: 100%;
   padding: 0.85rem 0.95rem;
   border-radius: 14px;
@@ -310,6 +308,15 @@ textarea,
   color: #f8fafc;
   outline: none;
   transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+button:hover:not(:disabled) {
+    filter: brightness(0.7);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.bc{
+    width: 100%;
 }
 
 textarea {

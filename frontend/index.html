@@ -30,11 +30,10 @@
               <strong id="sidebar-nickname">Gracz lokalny</strong>
               <p id="sidebar-email">local@quiz.app</p>
             </div>
-            <button type="button" class="button button--ghost button--small" id="login-shortcut-btn">Edytuj profil</button>
           </section>
 
           <section class="surface-muted">
-            <p class="section-kicker">Szybki status</p>
+            <p class="section-kicker">Statystyki</p>
             <ul class="sidebar__stats">
               <li><span>Sesje</span><strong id="sidebar-games">0</strong></li>
               <li><span>Punkty</span><strong id="sidebar-points">0</strong></li>
@@ -44,37 +43,6 @@
         </aside>
 
         <section class="content-shell">
-          <header class="topbar surface-block">
-            <div>
-              <p class="section-kicker">Local-first dashboard</p>
-              <h2>Nauka, egzamin i pełny backup lokalnego quizu</h2>
-              <p class="intro">
-                Teraz panel spina w jednym miejscu spokojny tryb nauki, restrykcyjny egzamin, podgląd odpowiedzi po
-                rundzie, retry błędnych pytań oraz backup całej aplikacji bez żadnego backendu.
-              </p>
-            </div>
-
-            <div class="hero__stats topbar__stats" aria-label="Szybkie statystyki">
-              <article class="stat-card">
-                <span class="stat-card__label">Źródło</span>
-                <strong id="stat-source">Local-only</strong>
-              </article>
-              <article class="stat-card">
-                <span class="stat-card__label">Pytania</span>
-                <strong id="stat-count">0 pytań</strong>
-              </article>
-              <article class="stat-card">
-                <span class="stat-card__label">Tryb</span>
-                <strong id="stat-mode">Nauka</strong>
-              </article>
-              <article class="stat-card">
-                <span class="stat-card__label">Średnia skuteczność</span>
-                <strong id="stat-best">Brak danych</strong>
-              </article>
-            </div>
-          </header>
-
-          <div id="status" aria-live="polite"></div>
 
           <div class="tab-strip" aria-label="Szybkie zakładki">
             <button type="button" class="tab-pill tab-pill--active" data-tab-trigger="overview">Start</button>
@@ -88,18 +56,11 @@
             <div class="dashboard-grid dashboard-grid--overview">
               <article class="surface-block hero-card">
                 <p class="section-kicker">Centrum dowodzenia</p>
-                <h3>Wszystko w jednym miejscu</h3>
-                <p class="intro">
-                  Masz tu od ręki profil, rekomendację następnej sesji, przegląd najtrudniejszych pytań, tryb egzaminu
-                  i pełne zarządzanie lokalnym backupem.
-                </p>
-                <div class="hero__actions hero__actions--primary">
-                  <button type="button" class="button" id="start-quiz-btn">Start sesji</button>
-                  <button type="button" class="button button--ghost" id="weak-spots-btn">Trenuj słabe miejsca</button>
-                </div>
-                <p id="weak-spots-status" class="config-note"></p>
-                <div class="hero__utility">
-                  <button type="button" class="button button--ghost button--small" id="seed-demo-btn">Załaduj demo</button>
+                <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+                  <button type="button" class="button bc" id="start-quiz-btn">Start sesji</button>
+                  <button type="button" class="button button--ghost bc" id="weak-spots-btn">Trenuj słabe miejsca</button>
+                  <p id="weak-spots-status" class="config-note"></p>
+                  <button type="button" class="button button--ghost " id="seed-demo-btn" style="margin-top: 2.5rem;">Załaduj demo</button>
                   <p class="hero__utility-note">Demo od razu pokaże readiness, trend i najczęstsze błędy.</p>
                 </div>
               </article>
@@ -211,7 +172,6 @@
 
               <article class="surface-block">
                 <p class="section-kicker">Szybki wybór</p>
-                <h3>Tryby podobne do zakładek w aplikacji</h3>
                 <section id="mode-cards-play" class="mode-grid"></section>
               </article>
             </div>

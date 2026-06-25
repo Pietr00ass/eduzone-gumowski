@@ -378,7 +378,6 @@ function buildModeCard(modeKey, compact = false) {
   article.className = `mode-card ${state.config.mode === modeKey ? 'mode-card--active' : ''}`;
   article.innerHTML = `
     <strong>${escapeHtml(mode.label)}</strong>
-    <p>${escapeHtml(mode.description)}</p>
     <span>${escapeHtml(mode.accent)}</span>
     <div class="mode-card__meta">${getModeMeta(modeKey).map((item) => `<span class="badge">${escapeHtml(item)}</span>`).join('')}</div>
     ${compact ? '' : '<button type="button" class="button button--ghost button--small">Wybierz</button>'}
@@ -703,7 +702,7 @@ function renderQuickQuestionPreview() {
   const draft = readQuickQuestionDraft();
   const hasAnyValue = draft.content || draft.category || draft.answers.length > 0 || draft.correctAnswer;
   if (!hasAnyValue) {
-    elements.quickQuestionPreview.innerHTML = '<p class="empty-state">Wypełnij formularz po prawej, a tu pojawi się podgląd pytania przed zapisem.</p>';
+    elements.quickQuestionPreview.innerHTML = '<p class="empty-state">Wypełnij formularz, a tu pojawi się podgląd pytania przed zapisem.</p>';
     return;
   }
   try {
