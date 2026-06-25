@@ -438,6 +438,10 @@ textarea:disabled {
   font-weight: 700;
 }
 
+#quiz-actions{
+  margin-bottom: 0.5rem;
+}
+
 .summary-card__description {
   margin: 0.35rem 0 0;
   color: #c9daf4;
@@ -817,6 +821,9 @@ textarea:disabled {
   border-radius: 18px;
   background: rgba(10, 19, 32, 0.68);
   border: 1px solid rgba(148, 163, 184, 0.16);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .quiz-timer--muted {
