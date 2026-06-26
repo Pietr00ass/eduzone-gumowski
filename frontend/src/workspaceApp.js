@@ -43,10 +43,6 @@ const elements = {
   profileCard: document.querySelector('#profile-card'),
   modeCards: document.querySelector('#mode-cards'),
   modeCardsPlay: document.querySelector('#mode-cards-play'),
-  statSource: document.querySelector('#stat-source'),
-  statCount: document.querySelector('#stat-count'),
-  statMode: document.querySelector('#stat-mode'),
-  statBest: document.querySelector('#stat-best'),
   overviewInsights: document.querySelector('#overview-insights'),
   mistakeHotspots: document.querySelector('#mistake-hotspots'),
   sidebarAvatar: document.querySelector('#sidebar-avatar'),
@@ -378,7 +374,6 @@ function buildModeCard(modeKey, compact = false) {
   article.className = `mode-card ${state.config.mode === modeKey ? 'mode-card--active' : ''}`;
   article.innerHTML = `
     <strong>${escapeHtml(mode.label)}</strong>
-    <p>${escapeHtml(mode.description)}</p>
     <span>${escapeHtml(mode.accent)}</span>
     <div class="mode-card__meta">${getModeMeta(modeKey).map((item) => `<span class="badge">${escapeHtml(item)}</span>`).join('')}</div>
     ${compact ? '' : '<button type="button" class="button button--ghost button--small">Wybierz</button>'}
@@ -642,14 +637,6 @@ function renderUserPanel() {
   elements.sidebarAccuracy.textContent = metrics.totalQuestions > 0 ? formatPercentage(metrics.averageAccuracy) : '0%';
 }
 
-function updateStats() {
-  const metrics = getHistoryMetrics(state.history);
-  elements.statSource.textContent = 'Local-only + backup JSON';
-  elements.statCount.textContent = `${state.questions.length} ${state.questions.length === 1 ? 'pytanie' : 'pytań'}`;
-  elements.statMode.textContent = getModeConfig(state.config.mode).label;
-  elements.statBest.textContent = metrics.totalQuestions > 0 ? formatPercentage(metrics.averageAccuracy) : 'Brak danych';
-}
-
 function getAdaptiveSignals() {
   const hardest = getHardestCategory(state.history);
   const recommendation = getRecommendedSession({ history: state.history, questions: state.questions, focus: state.user.focus });
@@ -703,7 +690,7 @@ function renderQuickQuestionPreview() {
   const draft = readQuickQuestionDraft();
   const hasAnyValue = draft.content || draft.category || draft.answers.length > 0 || draft.correctAnswer;
   if (!hasAnyValue) {
-    elements.quickQuestionPreview.innerHTML = '<p class="empty-state">Wypełnij formularz po prawej, a tu pojawi się podgląd pytania przed zapisem.</p>';
+    elements.quickQuestionPreview.innerHTML = '<p class="empty-state">Wypełnij formularz, a tu pojawi się podgląd pytania przed zapisem.</p>';
     return;
   }
   try {
@@ -726,7 +713,6 @@ function renderAll({ syncEditor = false } = {}) {
   renderUserPanel();
   renderWeakSpotCallToAction();
   renderQuickQuestionPreview();
-  updateStats();
   if (syncEditor) {
     syncQuestionsEditor();
   }
